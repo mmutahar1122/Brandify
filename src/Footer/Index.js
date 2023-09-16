@@ -8,7 +8,7 @@ const Footer = () => {
   <footer id="footer">
     <div className="container">
       <div className="copyright">
-        &copy;Create Your <strong><span>Personal Wesite in Cheap Price</span></strong>
+        &copy;Create Your <strong><span>Personal Website in Cheap Price</span></strong>
       </div>
       <div className="credits">
         {/* <!-- All the links in the footer should remain intact. --> */}
