@@ -733,18 +733,20 @@ section {
   font-size: 18px;
 }
 
-.services .title a {
+.services .title span {
   color: #343a40;
+  cursor: pointer;
+
 }
 
-.services .title a:hover {
+.services .title span:hover {
   color: #149ddd;
 }
 
 .services .description {
   margin-left: 80px;
   line-height: 24px;
-  font-size: 14px;
+  font-size: 14px; 
 }
 
 /*--------------------------------------------------------------
