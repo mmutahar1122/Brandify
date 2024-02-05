@@ -8,7 +8,7 @@ import Resume from './Resume/Index';
 import Portfolio from './Portfolio/Index';
 import Services from './services/Index';
 import Testimonial from './Testimonial/Index';
-// import Contact from './Contact/Index';
+import Contact from './Contact/Index';
 import Footer from './Footer/Index';
 import { useEffect } from 'react';
 import { BrowserRouter,useLocation } from 'react-router-dom';
@@ -35,7 +35,7 @@ function App() {
      <Portfolio/>
      <Services/>
      <Testimonial/>
-     {/* <Contact/> */}
+     <Contact/>
      <Footer/>
      </BrowserRouter>
 
