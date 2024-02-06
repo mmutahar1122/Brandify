@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import ServicesList from '../Components/Services/services'
+import ServicesList from "../../../Components/Services/services"
 const Services = () => {
 
   const [modal,setModal]=useState(false)
