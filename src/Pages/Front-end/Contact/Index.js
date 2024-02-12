@@ -1,6 +1,72 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { contactusUsers } from '../../../Store/Slices';
+import { UseDispatch, useDispatch } from 'react-redux';
+import * as yup from "yup"
 
 const Contact = () => {
+  const initialState = {
+    name:"",
+    email:"",
+    message:""
+  }
+
+  const contactSchema = yup.object({
+    name:yup.string().min(3,"name must be 3 letters").required("name is required"),
+    email:yup.string().email().min(3,"email must be 3 letters").required("email is required"),
+    message:yup.string().min(20,"message must be 20 letters").required("message is required"),
+  })
+  const [state, setState] = useState(initialState);
+  const [errMessage, setErrMessage] =useState({});
+  const dispatch = useDispatch();
+
+  const handleChange = (e) => {
+
+    const {name, value} =e.target;
+    console.log(name,value)
+    setState({
+      ...state,
+      [name]:value
+    })
+
+  }
+  // 
+  const handleSubmit =async (e) =>{
+    e.preventDefault();
+    const URL = "http://localhost:1991/api/auth/user-contactus";
+
+  try {
+    const validation = await contactSchema.validate(state, {abortEarly: false});
+    console.log(validation)
+    if(validation){
+      try {
+        const responce = await fetch(URL,{
+          method : "POST",
+          headers :{
+            "Content-Type" :"application/json"
+          },
+          body : JSON.stringify(state),
+        })
+        console.log("responce for  Contactus users",responce);
+        if (responce.ok){
+          dispatch(contactusUsers(state));
+          setErrMessage({});
+        setState(initialState);
+        }
+      } catch (error) {
+        console.log("data post failed form contact us page");
+        
+      }
+    }
+  } catch (err) {
+    const err_message = err.inner?.reduce((acc, curr)=>{
+      acc[curr.path] = curr.message;
+      return acc
+    }, {})
+    setErrMessage(err_message,'-=-')
+    console.log("yup validation error",err_message);
+
+  }
+  }
   return (
     <main id="main">
     
@@ -44,24 +110,28 @@ const Contact = () => {
           </div>
 
           <div className="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
-            <form action="forms/contact.php" method="post" role="form" className="php-email-form">
-              <div className="row">
-                <div className="form-group col-md-6">
-                  <label htmlFor="name">Your Name</label>
-                  <input type="text" name="name" className="form-control" id="name" required/>
+            <form onSubmit={(e)=>handleSubmit(e)} action="forms/contact.php" method="post" role="form" className="php-email-form">
+              <div className="">
+                <div className="h-[110px]">
+                  <label>Your Name</label>
+                  <input onChange={(e)=>handleChange(e)} type="text" name="name" value={state.name} className="form-control" />
+                  <p className='text-red-500 text-sm'>{errMessage?.name}</p>
                 </div>
-                <div className="form-group col-md-6">
-                  <label htmlFor="name">Your Email</label>
-                  <input type="email" className="form-control" name="email" id="email" required/>
+                <div className="h-[110px]">
+                  <label>Your Email</label>
+                  <input onChange={(e)=>handleChange(e)} type="email"  name="email" value={state.email} className="form-control"/>
+                  <p className='text-red-500 text-sm'>{errMessage?.email}</p>
+
                 </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="name">Subject</label>
+              {/* <div className="form-group">
+                <label>Subject</label>
                 <input type="text" className="form-control" name="subject" id="subject" required/>
-              </div>
+              </div> */}
               <div className="form-group">
-                <label htmlFor="name">Message</label>
-                <textarea className="form-control" name="message" rows="10" required></textarea>
+                <label>Message</label>
+                <textarea className="form-control" onChange={(e)=>handleChange(e)} name="message" value={state.message} rows="10"></textarea>
+                <p className='text-red-500 text-sm'>{errMessage?.message}</p>
               </div>
               <div className="my-3">
                 <div className="loading">Loading</div>

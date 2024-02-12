@@ -2,7 +2,9 @@ import { useState } from "react"
 import { SignupUser } from "../../../Store/Slices";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import * as yup from "yup"
+import * as yup from "yup";
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 
 const Signup = () => {
@@ -14,10 +16,10 @@ const Signup = () => {
     };
 
     const SignUpSchema = yup.object({
-        fname: yup.string().required("first name is required").min(3, "first name must be 3 letters"),
-        lname: yup.string().required("last name is required").min(3, "last name must be 3 letters"),
-        email: yup.string().email("invalid email").required("email is required").min(3, "name must be 3 letters"),
-        password: yup.string().required("password is required").min(3, "password must be 4 letters"),
+        fname: yup.string().min(3, "first name must be 3 letters").required("first name is required"),
+        lname: yup.string().min(3, "last name must be 3 letters").required("last name is required"),
+        email: yup.string().email("invalid email").min(3, "email be 3 letters").required("email is required"),
+        password: yup.string().min(4, "password must be 4 letters").required("password is required"),
 
     })
     const [state, setState] = useState(initialState);
@@ -33,6 +35,7 @@ const Signup = () => {
             [name]: value
         })
     }
+    
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -49,14 +52,22 @@ const Signup = () => {
                         },
                         body: JSON.stringify(state),
                     })
-                    console.log("responce", responce);
-                    dispatch(SignupUser(state));
-                    setState(initialState);
-                    setErrMessage({});
-                    navigate("/login-user");
+                    console.log("responce", await responce.json());
+                    if (responce.ok) {
+                        setState(initialState);
+                        dispatch(SignupUser(state));
+                        setErrMessage({});
+                        navigate("/login-user");
+                        toast("signup succefull");
+                        
+                    }
+                    if(!responce.ok){
+                        toast("user already exist");
+
+                    }
 
                 } catch (error) {
-                    console.log("error", error);
+                    console.log("-error", error);
                 }
 
             }
@@ -98,11 +109,11 @@ const Signup = () => {
 
 
                 </div>
-                <div className="h-[110px]">
+                <div className="mb-3 h-[110px]">
                     <label className="block text-gray-700 text-sm font-bold mb-2">
                         Password
                     </label>
-                    <input onChange={(e) => handleChange(e)} name="password" value={state.password} className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 h-12 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" type="password" placeholder="****" />
+                    <input onChange={(e) => handleChange(e)} name="password" value={state.password} className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 h-12 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="password" placeholder="****" />
                     <p className="text-red-500 mt-2 md:text-sm ">{errMessage?.password}</p>
                 </div>
                 <div className="flex items-center justify-between">
@@ -111,8 +122,7 @@ const Signup = () => {
                     </button>
                 </div>
             </form>
-            <p className="text-center text-gray-500 text-xs">
-                &copy;2024 Brandify.com
+            <p className="text-center text-gray-500 text-sm ">already have an account? <span onClick={()=> navigate("/login-user")} className="cursor-pointer text-blue-700">goto login</span>
             </p>
         </div>
     </>
