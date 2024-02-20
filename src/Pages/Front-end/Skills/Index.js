@@ -34,7 +34,7 @@ const Skill = () => {
             <div className="progress">
               <span className="skill">Add Run & Audience Target <i className="val">95%</i></span>
               <div className="progress-bar-wrap">
-                <div className="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                <div className="progress-bar progress-bar-ads" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
             </div>
 

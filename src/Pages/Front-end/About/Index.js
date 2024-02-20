@@ -30,14 +30,14 @@ const About = () => {
                   <li><i className="bi bi-chevron-right"></i> <strong>Website:</strong> <span>www.brandify.com</span></li>
                   <li><i className="bi bi-chevron-right"></i> <strong>Phone:</strong> <span>+92-309-6382191</span></li>
                   <li><i className="bi bi-chevron-right"></i> <strong>City:</strong> <span>Pakistan, Faisalabad</span></li>
+                  <li><i className="bi bi-chevron-right"></i> <strong>Email:</strong> <span>brandify91@gmail.com</span></li>
+                  <li><i className="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span>Available (Open To Work)</span></li>
                 </ul>
               </div>
               <div className="col-lg-6">
                 <ul>
-                  <li><i className="bi bi-chevron-right"></i> <strong>Age:</strong> <span>20</span></li>
-                  <li><i className="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>Bachelor Of Computer Science</span></li>
-                  <li><i className="bi bi-chevron-right"></i> <strong>Email:</strong> <span>brandify91@gmail.com</span></li>
-                  <li><i className="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span>Available (Open To Work)</span></li>
+                  {/* <li><i className="bi bi-chevron-right"></i> <strong>Age:</strong> <span>20</span></li> */}
+                  {/* <li><i className="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>Bachelor Of Computer Science</span></li> */}
                 </ul>
               </div>
             </div>

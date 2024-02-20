@@ -15,7 +15,6 @@ const Login = () => {
     password: yup.string().min(4, "password must be 4 letters").required("password is required"),
   })
   const [state, setState] = useState(initialState);
-  const [loginToken,setLoginToken]=useState(localStorage.getItem('token'))
 
   const [errMessage, setErrMessage] = useState({});
   const navigate = useNavigate();
@@ -44,21 +43,27 @@ const Login = () => {
             },
             body: JSON.stringify(state),
           });
-          // console.log("login responce",await responce.json())
-          const resOk = await responce.json();
-          console.log("login responce",resOk)
-         const saveloginToken = localStorage.setItem('token',resOk.Token);
-
+          console.log("login responce",await responce)
+          
+          const JsonResponce = await responce.json();
+          // const res = responce;
+          // console.log("res",res)
+          
           if(responce.ok){
-            dispatch(LoginUser(state));
+            const Token = localStorage.setItem('token',JsonResponce?.Token);
+            const {userName, userEmail} = JsonResponce
+            const userData = localStorage.setItem('userData',{userName, userEmail})
+            dispatch(LoginUser({state,JsonResponce}));
             setState(initialState);
-            toast("login succefull");
-            if(loginToken){
-              navigate('/');
-            }
+            toast.success(JsonResponce.msg);
+          // console.log("login responce",JsonResponce)
+
+              navigate('/home');
           }
           if(!responce.ok){
-            toast("Invalid Crediantial");
+            console.log("login responce",JsonResponce)
+
+            toast.error(JsonResponce);
     
           }
     } catch (error) {
@@ -80,7 +85,7 @@ const Login = () => {
   }
 
   return <>
-    <div className="w-full md:max-w-lg max-w-xs mx-auto md:mt-[100px]">
+    <div className="w-full md:max-w-lg max-w-xs mx-auto mt-[100px]">
       <form onSubmit={(e) => handleSubmit(e)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <div className="h-[110px]">
                     <label className="block text-gray-700 text-sm font-bold mb-2">

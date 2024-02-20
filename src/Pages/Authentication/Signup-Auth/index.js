@@ -3,7 +3,7 @@ import { SignupUser } from "../../../Store/Slices";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -40,7 +40,6 @@ const Signup = () => {
         e.preventDefault()
         try {
             const validation = await SignUpSchema.validate(state, { abortEarly: false });
-            console.log("validation", validation)
             if (validation) {
                 try {
 
@@ -52,22 +51,22 @@ const Signup = () => {
                         },
                         body: JSON.stringify(state),
                     })
-                    console.log("responce", await responce.json());
                     if (responce.ok) {
                         setState(initialState);
+                        toast.success("signup succefull");
                         dispatch(SignupUser(state));
                         setErrMessage({});
                         navigate("/login-user");
-                        toast("signup succefull");
                         
                     }
                     if(!responce.ok){
-                        toast("user already exist");
+                      const alreadyExist = await responce.json();
+                        toast.error(alreadyExist);
 
                     }
 
                 } catch (error) {
-                    console.log("-error", error);
+                    console.log("signup-error", error);
                 }
 
             }
@@ -77,11 +76,10 @@ const Signup = () => {
                 return acc
             }, {});
             setErrMessage(err_msg)
-            console.log("signup validation", err_msg);
         }
     }
     return <>
-        <div className="w-full md:max-w-lg max-w-xs mx-auto md:mt-[100px]">
+        <div className="w-full md:max-w-lg max-w-xs mx-auto mt-[100px]">
             <form onSubmit={(e) => handleSubmit(e)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                 <div className="h-[110px]">
                     <label className="block text-gray-700 text-sm font-bold mb-2">
