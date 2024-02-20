@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { contactusUsers } from '../../../Store/Slices';
-import { UseDispatch, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as yup from "yup"
+import {toast } from 'react-toastify';
 
 const Contact = () => {
   const initialState = {
@@ -17,14 +19,20 @@ const Contact = () => {
   })
   const [state, setState] = useState(initialState);
   const [errMessage, setErrMessage] =useState({});
+  const userData = useSelector((state)=>state.name.Login_users.JsonResponce);
+  const [contactData, setContactData] = useState({
+    name : userData?.userName,
+    email : userData?.userEmail,
+    message : ""
+  })
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
 
     const {name, value} =e.target;
     console.log(name,value)
-    setState({
-      ...state,
+    setContactData({
+      ...contactData,
       [name]:value
     })
 
@@ -35,26 +43,29 @@ const Contact = () => {
     const URL = "http://localhost:1991/api/auth/user-contactus";
 
   try {
-    const validation = await contactSchema.validate(state, {abortEarly: false});
+    const validation = await contactSchema.validate(contactData, {abortEarly: false});
     console.log(validation)
     if(validation){
+      setErrMessage({});
       try {
         const responce = await fetch(URL,{
           method : "POST",
           headers :{
             "Content-Type" :"application/json"
           },
-          body : JSON.stringify(state),
+          body : JSON.stringify(contactData),
         })
-        console.log("responce for  Contactus users",responce);
-        if (responce.ok){
-          dispatch(contactusUsers(state));
-          setErrMessage({});
-        setState(initialState);
+        console.log("responce for  Contactus users", await responce.ok);
+        if(responce.ok){
+          dispatch(contactusUsers(contactData));
+        setContactData(initialState);
+        toast.success("Subscribed");
+
+
         }
       } catch (error) {
         console.log("data post failed form contact us page");
-        
+        toast.error("Failed to Subscribe");
       }
     }
   } catch (err) {
@@ -93,7 +104,7 @@ const Contact = () => {
               <div className="email">
                 <i className="bi bi-envelope"></i>
                 <h4>Email:</h4>
-                <p>brandify@gmail.com</p>
+                <p>Brandify91@gmail.com</p>
               </div>
 
               <div className="phone">
@@ -102,9 +113,9 @@ const Contact = () => {
                 <p>+92-309-6382191</p>
               </div>
 
-              <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameBorder="0"
+              {/* <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameBorder="0"
             //    style={{"border:0; width: 100%; height: 290px;"}} 
-            allowFullScreen></iframe>
+            allowFullScreen></iframe> */}
             </div>
 
           </div>
@@ -114,12 +125,12 @@ const Contact = () => {
               <div className="">
                 <div className="h-[110px]">
                   <label>Your Name</label>
-                  <input onChange={(e)=>handleChange(e)} type="text" name="name" value={state.name} className="form-control" />
+                  <input onChange={(e)=>handleChange(e)} type="text" name="name" value={contactData.name}  className="form-control" />
                   <p className='text-red-500 text-sm'>{errMessage?.name}</p>
                 </div>
                 <div className="h-[110px]">
                   <label>Your Email</label>
-                  <input onChange={(e)=>handleChange(e)} type="email"  name="email" value={state.email} className="form-control"/>
+                  <input onChange={(e)=>handleChange(e)} type="email"  name="email" value={contactData.email} className="form-control"/>
                   <p className='text-red-500 text-sm'>{errMessage?.email}</p>
 
                 </div>
@@ -130,7 +141,7 @@ const Contact = () => {
               </div> */}
               <div className="form-group">
                 <label>Message</label>
-                <textarea className="form-control" onChange={(e)=>handleChange(e)} name="message" value={state.message} rows="10"></textarea>
+                <textarea className="form-control" onChange={(e)=>handleChange(e)} name="message" value={contactData.message} rows="10"></textarea>
                 <p className='text-red-500 text-sm'>{errMessage?.message}</p>
               </div>
               <div className="my-3">

@@ -92,7 +92,7 @@ const Services = () => {
     {/* <!-- End Services Section --> */}
     {
   modal && (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={closeModal}>
+    <div className="fixed inset-0 bg-black bg-opacity-50" onClick={closeModal}>
       <ServicesList state={state} closeModal={closeModal} setModal={setModal}/>
     </div>
   )

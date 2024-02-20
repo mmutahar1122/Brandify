@@ -7,6 +7,12 @@
   pointer-events: none;
 }
 
+.skills .progress-bar{
+  width: 100%;
+}
+.skills .progress-bar-ads{
+  width: 95%;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

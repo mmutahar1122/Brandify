@@ -150,7 +150,7 @@ const currentArray = state ? dataMapping[state] : [];
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 text-center">
-                <p className='text-[32px] font-bold'>{state}</p>
+                <p className='md:text-[32px] text-xl font-bold'>{state}</p>
 
                   <div className="sm:flex sm:items-start justify-center">
                       <div className="mt-2">

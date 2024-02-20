@@ -22,57 +22,29 @@ import { ToastContainer} from 'react-toastify';
 
 function App() {
   // const [loginToken,setLoginToken]=useState(localStorage.getItem('token'))
-  const ScrollToTop = () => {
-    const gotoTOp = useLocation();
-    useEffect(() => {
-      window.scrollTo(0, 0);
-    }, [gotoTOp])
-  }
+  // const ScrollToTop = () => {
+  //   const gotoTOp = useLocation();
+  //   useEffect(() => {
+  //     window.scrollTo(0, 0);
+  //   }, [gotoTOp])
+  // }
   return (
     <>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-    <Route path='/signup-user' element={<Signup/>} />
-    <Route path='/login-user' element={<Login/>} />
-    <Route
-            path='/'
-            element={
-                <>
-                  <Home />
+
+
+    {/* <ScrollToTop/> */}
+     <Navbar/>
+      <Home />
                   <About />
                   <Facts />
                   <Skill />
-                  <Resume />
+                  {/* <Resume /> */}
                   <Portfolio />
                   <Services />
-                  <Testimonial />
+                  {/* <Testimonial /> */}
                   <Contact />
-                  <Footer />
-                </>
-            }
-          />
-    
-    </Routes>
-       
-      </BrowserRouter>
-      <ToastContainer />
-
-
-      {/* <BrowserRouter>
-    <ScrollToTop/>
-     
-      */}
-      {/*  */}
-      {/*  */}
-      {/*  */}
-      {/* 
-     <Services/>
-     <Testimonial/>
-     <Contact/>
-     <Footer/>
-     </BrowserRouter> */}
-
+                  {/* <Footer /> */}
+                  <ToastContainer/>
 
     </>
   );
